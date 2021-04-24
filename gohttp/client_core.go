@@ -58,16 +58,19 @@ func (c *httpClient) getHttpClient() *http.Client {
 		return c.client
 	}
 
-	c.client = &http.Client{
-		Timeout: c.getConnectionTimeout() + c.getRequestTimeout(),
-		Transport: &http.Transport{
-			MaxIdleConnsPerHost:   c.getMaxIdleConnection(),
-			ResponseHeaderTimeout: c.getRequestTimeout(),
-			DialContext: net.Dialer{
-				Timeout: c.getConnectionTimeout(),
-			}.Resolver.Dial,
-		},
-	}
+	//once := sync.Once{}
+	c.clientOnce.Do(func() {
+		c.client = &http.Client{
+			Timeout: c.getConnectionTimeout() + c.getRequestTimeout(),
+			Transport: &http.Transport{
+				MaxIdleConnsPerHost:   c.getMaxIdleConnection(),
+				ResponseHeaderTimeout: c.getRequestTimeout(),
+				DialContext: net.Dialer{
+					Timeout: c.getConnectionTimeout(),
+				}.Resolver.Dial,
+			},
+		}
+	})
 
 	return c.client
 }

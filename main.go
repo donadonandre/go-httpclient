@@ -13,7 +13,10 @@ var (
 )
 
 func getGitHubClient() gohttp.Client {
-	client := gohttp.NewBuilder().Build()
+	client := gohttp.NewBuilder().
+		DisableTimeouts(true).
+		SetMaxIdleConnections(5).
+		Build()
 
 	/*commonHeaders := make(http.Header)
 	commonHeaders.Set("Authorization", "Bearer ABC-123")
