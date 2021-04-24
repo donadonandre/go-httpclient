@@ -7,7 +7,12 @@ import (
 )
 
 type httpClient struct {
-	client  *http.Client
+	client *http.Client
+
+	maxIdleConnections int
+	connectionTimeout  time.Duration
+	requestTimeout     time.Duration
+
 	Headers http.Header
 }
 
@@ -30,6 +35,9 @@ func New() HttpClient {
 
 type HttpClient interface {
 	SetHeaders(headers http.Header)
+	SetConnectionTimeout(timeout time.Duration)
+	SetRequestTimeout(timeout time.Duration)
+	SetMaxIdleConnections(connections int)
 
 	Get(url string, headers http.Header) (*http.Response, error)
 	Post(url string, headers http.Header, body interface{}) (*http.Response, error)
@@ -40,6 +48,18 @@ type HttpClient interface {
 
 func (c *httpClient) SetHeaders(headers http.Header) {
 	c.Headers = headers
+}
+
+func (c *httpClient) SetConnectionTimeout(timeout time.Duration) {
+	c.connectionTimeout = timeout
+}
+
+func (c *httpClient) SetRequestTimeout(timeout time.Duration) {
+	c.requestTimeout = timeout
+}
+
+func (c *httpClient) SetMaxIdleConnections(connections int) {
+	c.maxIdleConnections = connections
 }
 
 func (c *httpClient) Get(url string, headers http.Header) (*http.Response, error) {
