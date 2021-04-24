@@ -63,7 +63,7 @@ func (c *httpClient) getHttpClient() *http.Client {
 			MaxIdleConnsPerHost:   c.getMaxIdleConnection(),
 			ResponseHeaderTimeout: c.getRequestTimeout(),
 			DialContext: net.Dialer{
-				Timeout: c.connectionTimeout,
+				Timeout: c.getConnectionTimeout(),
 			}.Resolver.Dial,
 		},
 	}
