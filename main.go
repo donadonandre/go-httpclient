@@ -12,8 +12,8 @@ var (
 	gitHubHttpClient = getGitHubClient()
 )
 
-func getGitHubClient() gohttp.HttpClient {
-	client := gohttp.New()
+func getGitHubClient() gohttp.Client {
+	client := gohttp.NewBuilder().Build()
 
 	/*commonHeaders := make(http.Header)
 	commonHeaders.Set("Authorization", "Bearer ABC-123")

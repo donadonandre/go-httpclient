@@ -103,7 +103,7 @@ func (c *httpClient) getConnectionTimeout() time.Duration {
 func (c *httpClient) getRequestHeaders(requestHeaders http.Header) http.Header {
 	result := make(http.Header)
 	// Add common headers to the request:
-	for header, value := range c.Headers {
+	for header, value := range c.headers {
 		if len(value) > 0 {
 			result.Set(header, value[0])
 		}
